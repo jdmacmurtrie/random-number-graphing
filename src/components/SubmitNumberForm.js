@@ -10,19 +10,19 @@ const renderField = ({ type, label, input, meta: { touched, error }}) => (
   </div>
 )
 
-let SubmitNumberForm = ({ handleSubmit, submitNumber }) => {
+let SubmitNumberForm = ({ handleSubmit, retrieveRandomNumbers }) => {
   const submit = ({ number='' }, dispatch) => {
     let error = {};
     let isError = false;
 
-    if (number.trim() ==='') {
+    if (number.trim() === '' || !Number(number)) {
       error.number = 'Please input a number';
       isError = true;
     }
     if (isError) {
       throw new SubmissionError(error);
     } else {
-      submitNumber(number)
+      retrieveRandomNumbers(number)
       dispatch(reset('submitNumber'))
     }
   }
@@ -30,7 +30,7 @@ let SubmitNumberForm = ({ handleSubmit, submitNumber }) => {
   return (
     <form onSubmit={handleSubmit(submit)} className="number-form">
       <Field name="number" component={renderField} type="text" />
-      <button type="submit">Submit</button>
+      <button type="submit">Load</button>
     </form>
   )
 }

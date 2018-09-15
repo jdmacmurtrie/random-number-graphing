@@ -3,22 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import App from './containers/App.js';
-import submitNumber from './reducers/submitNumber'
+import retrieveNumbers from './reducers/retrieveNumbers'
 
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import { reducer as formReducer } from 'redux-form'
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-  submitNumber,
+  retrieveNumbers,
   form: formReducer
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')
-);registerServiceWorker();
+);
+registerServiceWorker();

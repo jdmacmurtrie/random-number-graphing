@@ -5,50 +5,51 @@ import { select } from 'd3-selection'
 import * as d3 from 'd3'
 
 class LineChart extends Component {
-   constructor(props){
-      super(props)
-      this.createLineChart = this.createLineChart.bind(this)
-   }
+  constructor(props){
+    super(props)
+    this.createLineChart = this.createLineChart.bind(this)
+  }
 
-   componentDidMount() {
-      this.createLineChart()
-   }
-   componentDidUpdate() {
-      this.createLineChart()
-   }
+  componentDidMount() {
+    this.createLineChart()
+  }
+
+  componentDidUpdate() {
+    this.createLineChart()
+  }
 
    createLineChart() {
-      const node = this.node
-   const margin = { left:100, right:10, top:10, bottom:150 };
+     const node = this.node
+     const margin = { left:100, right:10, top:10, bottom:150 };
 
-   const width = 600 - margin.left - margin.right,
-       height = 400 - margin.top - margin.bottom;
+     const width = 600 - margin.left - margin.right,
+           height = 400 - margin.top - margin.bottom;
 
-   const g = d3.select(node)
-     .append("svg")
-       .attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom)
-     .append("g")
-       .attr("transform", `translate(${margin.left}, ${margin.top})`);
+     const g = d3.select(node)
+       .append("svg")
+         .attr("width", width + margin.left + margin.right)
+         .attr("height", height + margin.top + margin.bottom)
+       .append("g")
+         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-       // X Label
-       g.append("text")
-           .attr("class", "x axis-label")
-           .attr("x", width / 2)
-           .attr("y", height + 55)
-           .attr("font-size", "20px")
-           .attr("text-anchor", "middle")
-           .text("Month");
-
-       // Y Label
-       g.append("text")
-           .attr("class", "y axis-label")
-           .attr("x", - (height / 2))
-           .attr("y", -60)
-           .attr("font-size", "20px")
-           .attr("text-anchor", "middle")
-           .attr("transform", "rotate(-90)")
-           .text("Revenue");
+       // // X Label
+       // g.append("text")
+       //     .attr("class", "x axis-label")
+       //     .attr("x", width / 2)
+       //     .attr("y", height + 55)
+       //     .attr("font-size", "20px")
+       //     .attr("text-anchor", "middle")
+       //     .text("Month");
+       //
+       // // Y Label
+       // g.append("text")
+       //     .attr("class", "y axis-label")
+       //     .attr("x", - (height / 2))
+       //     .attr("y", -60)
+       //     .attr("font-size", "20px")
+       //     .attr("text-anchor", "middle")
+       //     .attr("transform", "rotate(-90)")
+       //     .text("Revenue");
 
    // d3.json(this.props.data).then((data) => {
    //   console.log('data', data);
