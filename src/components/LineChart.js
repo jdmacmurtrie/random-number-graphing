@@ -24,8 +24,8 @@ class LineChart extends Component {
     const { numbers, time } = this.props
     const node = this.node
     const margin = { left:100, right:25, top:20, bottom:100 };
-    const width = 500 - margin.left - margin.right
-    const height = 500 - margin.top - margin.bottom
+    const width = 800 - margin.left - margin.right
+    const height = 800 - margin.top - margin.bottom
     const getTimes = () => {
       return numbers.map((num, i) => {
         const now = new Date(time)
@@ -61,36 +61,37 @@ class LineChart extends Component {
       .attr("y", height + 55)
       .attr("font-size", "20px")
       .attr("text-anchor", "middle")
-      .text("Random Numbers");
+      .text("Time");
 
   // Y Label
   g.append("text")
       .attr("class", "y axis-label")
       .attr("x", - (height / 2))
-      .attr("y", -60)
+      .attr("y", -40)
       .attr("font-size", "20px")
       .attr("text-anchor", "middle")
       .attr("transform", "rotate(-90)")
-      .text("Time");
+      .text("Random Numbers");
 
 
   const x = d3.scaleTime()
-    .rangeRound([0, width]);
+    .domain([
+      d3.min(data, (d) => d.time),
+      d3.max(data, (d) => d.time)
+    ])
+    .range([0, width])
 
   const getMinDomain = () => {
     const lowestNumber = d3.min(data, (d) => d.number)
+    console.log('lowest', lowestNumber);
     return lowestNumber > 0 ? 0 : lowestNumber
   }
   console.log('domain', getMinDomain())
   console.log('domain', d3.max(data, (d) => d.number));
 
-
   const y = d3.scaleLinear()
   .domain([getMinDomain(), d3.max(data, (d) => d.number)])
-  // .domain([0, d3.max(data, 0)])
   .range([height, 0]);
-
-  console.log('y', y);
 
   const line = d3.line()
     .x(d => x(d.time))
@@ -140,24 +141,16 @@ class LineChart extends Component {
     .attr("stroke-width", 1.5)
     .attr("d", line);
 
-  // const rects = g.selectAll("rect")
-  //   .data(this.props.numbers)
-  // const circles = g.selectAll('circle')
-  //
-  // circles.enter()
-  //   .append('circle')
-  //   .attr("cx", (d) => {d.time})
-  //   .attr("cy", (d) => d.number)
-  //   .attr("r", 20)
-  //   .attr("fill", "steelblue")
-  //   rects.enter()
-  //     .append("rect")
-  //       .attr("y", d => y(d.revenue))
-  //       .attr("x", d => x(d.month))
-  //       .attr("width", x.bandwidth)
-  //       .attr("height", d => height - y(d.revenue))
-  //       .attr("fill", "grey");
-  }
+  const circles = g.selectAll('circle')
+    .data(data);
+
+  circles.enter()
+    .append('circle')
+    .attr("cx", (d) => (x(d.time)))
+    .attr("cy", (d) => (y(d.number)))
+    .attr("r", 4)
+    .attr("fill", "steelblue")
+}
 
   render() {
     return (
