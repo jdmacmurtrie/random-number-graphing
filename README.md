@@ -1,17 +1,17 @@
 # Random Number Graphing
 
-To Do
+A simple app built with `create-react-app` utilizing D3.js and React.js
 
 ## Getting Started & Installing
 
-This app uses NPM version 5.6.0.
+This app uses Yarn version 1.3.2.
 ```sh
-$ npm -v
-=> 5.6.0
+$ yarn -v
+=> 1.3.2
 ```
-Install NPM for your `package-lock.json` and `node_modules` folder.
+Install Yarn for your `yarn.lock` and `node_modules` folder.
 ```sh
-$ npm install
+$ yarn install
 ```
 
 ### Setting Up
@@ -19,6 +19,10 @@ $ npm install
 In order to run the app in a development server, run the following command in your terminal:
 
 ```sh
-$ npm start
+$ yarn start
 ```
-Then, navigate to `localhost:8080` in your browser.
+Yarn should automatically open `localhost:3000` in your browser.
+
+### Functionality
+
+Input a number (N) to see N points charted across the graph, where X is a number returned from Random.org, and Y is historical time data based on quantity of values and time of input.
