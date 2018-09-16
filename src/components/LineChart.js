@@ -19,8 +19,9 @@ class LineChart extends Component {
     const { numbers, time } = this.props
     const node = this.node
     const margin = { left: 200, right: 70, top: 50, bottom: 200 }
-    const width = 1500 - margin.left - margin.right
+    const width = 1700 - margin.left - margin.right
     const height = 1000 - margin.top - margin.bottom
+
     const getTimes = () => {
       return numbers.map((num, i) => {
         const now = new Date(time)
@@ -42,11 +43,11 @@ class LineChart extends Component {
   d3.selectAll('g').remove()
 
   const g = d3.select(node)
-    .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    .append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
   const x = d3.scaleTime()
     .domain([
@@ -71,14 +72,16 @@ class LineChart extends Component {
   x.domain(d3.extent(data, (d) => d.time))
   y.domain(d3.extent(data, (d) => d.number))
 
-  g.append("path")
+  g.append('path')
     .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 3)
-    .attr("d", line)
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('stroke-width', () => {
+      return data.length < 300 ? 3 : 1
+    })
+    .attr('d', line)
 
   // Dots
   const circles = g.selectAll('circle')
@@ -86,72 +89,76 @@ class LineChart extends Component {
 
   circles.enter()
     .append('circle')
-    .attr("cx", (d) => x(d.time))
-    .attr("cy", (d) => y(d.number))
-    .attr("r", 6)
-    .attr("fill", "steelblue")
+    .attr('cx', (d) => x(d.time))
+    .attr('cy', (d) => y(d.number))
+    .attr('r', 6)
+    .attr('stroke', 'steelBlue')
+    .attr('stroke-width', 2)
+    .attr('fill', 'black')
 
 // Labels
+if (data.length < 300) {
   const labels = g.selectAll('text')
   .data(data)
 
   labels.enter()
-    .append('text')
-    .attr("x", (d) => x(d.time))
-    .attr("y", (d) => y(d.number + 12))
-    .attr('font-family', 'Georgia, serif')
-    .text(d => String(d.number))
+  .append('text')
+  .attr('x', (d) => x(d.time))
+  .attr('y', (d) => y(d.number + 12))
+  .attr('font-family', 'Georgia, serif')
+  .text(d => String(d.number))
+}
 
   // X-axis
-  const formatDate = d3.timeFormat("%m/%d")
-  const formatTime = d3.timeFormat("%I%p")
+  const formatDate = d3.timeFormat('%m/%d')
+  const formatTime = d3.timeFormat('%I%p')
   const xAxisCall = d3.axisBottom(x)
     .tickFormat(d => `${formatDate(d)} ${formatTime(d)}`)
 
-  g.append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0, ${height})`)
+  g.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', `translate(0, ${height})`)
     .call(xAxisCall)
-  .selectAll("text")
-    .attr("y", "10")
-    .attr("x", "-5")
-    .attr("text-anchor", "end")
-    .attr("transform", "rotate(-40)")
-    .attr("font-size", "18px")
+  .selectAll('text')
+    .attr('y', '10')
+    .attr('x', '-5')
+    .attr('text-anchor', 'end')
+    .attr('transform', 'rotate(-40)')
+    .attr('font-size', '18px')
 
   // X Label
-  g.append("text")
-      .attr("class", "x axis-label")
-      .attr("x", width / 2)
-      .attr("y", height + 200)
-      .attr("font-size", "40px")
-      .attr("text-anchor", "middle")
-      .text("Time")
+  g.append('text')
+      .attr('class', 'x axis-label')
+      .attr('x', width / 2)
+      .attr('y', height + 200)
+      .attr('font-size', '40px')
+      .attr('text-anchor', 'middle')
+      .text('Time')
 
 
   // Y-axis
-  g.append("g")
+  g.append('g')
     .call(d3.axisLeft(y))
-  .selectAll("text")
-    .attr("font-size", "18px")
+  .selectAll('text')
+    .attr('font-size', '18px')
 
 
   // Y Label
-  g.append("text")
-      .attr("class", "y axis-label")
-      .attr("x", - (height / 2))
-      .attr("y", -60)
-      .attr("font-size", "40px")
-      .attr("text-anchor", "middle")
-      .attr("transform", "rotate(-90)")
-      .text("Random Numbers")
+  g.append('text')
+      .attr('class', 'y axis-label')
+      .attr('x', - (height / 2))
+      .attr('y', -60)
+      .attr('font-size', '40px')
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('Random Numbers')
 
   }
 
   render() {
     return (
       <svg ref={node => this.node = node}
-        width={1500} height={1200}>
+        width={1700} height={1200}>
       </svg>
     )
   }
