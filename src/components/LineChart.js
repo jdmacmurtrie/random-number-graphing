@@ -18,8 +18,8 @@ class LineChart extends Component {
   createLineChart() {
     const { numbers, time } = this.props
     const node = this.node
-    const margin = { left:200, right:40, top:30, bottom:200 };
-    const width = 1000 - margin.left - margin.right
+    const margin = { left:200, right:70, top:30, bottom:200 }
+    const width = 1500 - margin.left - margin.right
     const height = 1000 - margin.top - margin.bottom
     const getTimes = () => {
       return numbers.map((num, i) => {
@@ -46,7 +46,7 @@ class LineChart extends Component {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
 
   const x = d3.scaleTime()
     .domain([
@@ -62,7 +62,45 @@ class LineChart extends Component {
 
   const y = d3.scaleLinear()
   .domain([getMinDomain(), d3.max(data, (d) => d.number)])
-  .range([height, 0]);
+  .range([height, 0])
+
+  // Lines
+  const line = d3.line()
+    .x(d => x(d.time))
+    .y(d => y(d.number))
+  x.domain(d3.extent(data, (d) => d.time))
+  y.domain(d3.extent(data, (d) => d.number))
+
+  g.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("stroke-width", 3)
+    .attr("d", line)
+
+  // Dots
+  const circles = g.selectAll('circle')
+    .data(data)
+
+  circles.enter()
+    .append('circle')
+    .attr("cx", (d) => x(d.time))
+    .attr("cy", (d) => y(d.number) + 5)
+    .attr("r", 6)
+    .attr("fill", "steelblue")
+
+// Labels
+  const labels = g.selectAll('text')
+  .data(data)
+
+  labels.enter()
+    .append('text')
+    .attr("x", (d) => x(d.time))
+    .attr("y", (d) => y(d.number))
+    .attr('font-family', 'Georgia, serif')
+    .text(d => String(d.number))
 
   // X-axis
   const xAxisCall = d3.axisBottom(x)
@@ -86,7 +124,7 @@ class LineChart extends Component {
       .attr("y", height + 200)
       .attr("font-size", "40px")
       .attr("text-anchor", "middle")
-      .text("Time");
+      .text("Time")
 
 
   // Y-axis
@@ -104,54 +142,14 @@ class LineChart extends Component {
       .attr("font-size", "40px")
       .attr("text-anchor", "middle")
       .attr("transform", "rotate(-90)")
-      .text("Random Numbers");
+      .text("Random Numbers")
 
-  // Lines
-  const line = d3.line()
-    .x(d => x(d.time))
-    .y(d => y(d.number))
-  x.domain(d3.extent(data, (d) => d.time));
-  y.domain(d3.extent(data, (d) => d.number));
-
-  g.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 3)
-    .attr("d", line);
-
-  // Dots
-  const circles = g.selectAll('circle')
-    .data(data);
-
-  circles.enter()
-    .append('circle')
-    .attr("cx", (d) => x(d.time))
-    .attr("cy", (d) => y(d.number))
-    .attr("r", 6)
-    .attr("fill", "steelblue")
-
-
-  const labels = g.selectAll('text')
-    .data(data)
-
-  labels.enter()
-    .append('text')
-    .text(d => d.number)
-    .attr("x", (d) => {
-      return x(d.time);
-    })
-    .attr("y", (d) => {
-      return y(d.number);
-    });
-}
+  }
 
   render() {
     return (
       <svg ref={node => this.node = node}
-        width={1200} height={1200} className="svg">
+        width={1500} height={1200} className="svg">
       </svg>
     )
   }
