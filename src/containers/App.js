@@ -46,11 +46,10 @@ import SubmitNumberForm from '../components/SubmitNumberForm'
 // ]
 
 const App = props => {
-  console.log('numbers!', props.numbers);
   return (
     <div>
       <h2 className="headline">Random Number Graphing</h2>
-			<LineChart data={props ? props.numbers : []} size={[500,500]} />
+			<LineChart {...props} />
       <div className="form-container">
         <SubmitNumberForm retrieveRandomNumbers={props.retrieveRandomNumbers}/>
       </div>
@@ -66,7 +65,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return({
-    numbers: state.retrieveNumbers.numbers
+    numbers: state.retrieveNumbers.numbers,
+    time: state.retrieveNumbers.time
   })}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
