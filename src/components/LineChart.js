@@ -18,15 +18,15 @@ class LineChart extends Component {
   createLineChart() {
     const { numbers, time } = this.props
     const node = this.node
-    const margin = { left:200, right:70, top:30, bottom:200 }
+    const margin = { left: 200, right: 70, top: 50, bottom: 200 }
     const width = 1500 - margin.left - margin.right
     const height = 1000 - margin.top - margin.bottom
     const getTimes = () => {
       return numbers.map((num, i) => {
         const now = new Date(time)
-        const roundedMoment = (now.getMinutes() < 30)
-        ? now.setMinutes(0)
-        : () => {
+        if (now.getMinutes() < 30) {
+          now.setMinutes(0)
+        } else {
           now.setMinutes(0)
           now.setHours(now.getHours() + 1)
         }
@@ -87,7 +87,7 @@ class LineChart extends Component {
   circles.enter()
     .append('circle')
     .attr("cx", (d) => x(d.time))
-    .attr("cy", (d) => y(d.number) + 5)
+    .attr("cy", (d) => y(d.number))
     .attr("r", 6)
     .attr("fill", "steelblue")
 
@@ -98,13 +98,15 @@ class LineChart extends Component {
   labels.enter()
     .append('text')
     .attr("x", (d) => x(d.time))
-    .attr("y", (d) => y(d.number))
+    .attr("y", (d) => y(d.number + 12))
     .attr('font-family', 'Georgia, serif')
     .text(d => String(d.number))
 
   // X-axis
+  const formatDate = d3.timeFormat("%m/%d")
+  const formatTime = d3.timeFormat("%I%p")
   const xAxisCall = d3.axisBottom(x)
-    .tickFormat(d => d.toLocaleString())
+    .tickFormat(d => `${formatDate(d)} ${formatTime(d)}`)
 
   g.append("g")
     .attr("class", "x axis")
@@ -149,7 +151,7 @@ class LineChart extends Component {
   render() {
     return (
       <svg ref={node => this.node = node}
-        width={1500} height={1200} className="svg">
+        width={1500} height={1200}>
       </svg>
     )
   }

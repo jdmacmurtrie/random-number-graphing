@@ -1,5 +1,4 @@
 html, body {
-  /* background-color: #004fff; */
   font-family: 'Tangerine', cursive;
   font-size: 25px;
 }
@@ -51,6 +50,7 @@ button:hover {
   margin-top: 0;
 }
 
-.svg {
-  padding-left: 15%
+svg {
+  margin-left: 25%;
+  margin-right: 25%;
 }
