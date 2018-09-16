@@ -1,10 +1,11 @@
 import React from 'react'
-import { Field, reduxForm, SubmissionError, reset, dispatch } from 'redux-form'
+import { Field, reduxForm, SubmissionError, reset } from 'redux-form'
 
 const renderField = ({ type, label, input, meta: { touched, error }}) => (
   <div className="input-row">
     <label>{label}</label>
-    <input {...input} type={type}/>
+    <input {...input} type={type} autoFocus/>
+    <button type="submit">Load</button>
     {touched && error &&
      <span className="error">{error}</span>}
   </div>
@@ -30,7 +31,6 @@ let SubmitNumberForm = ({ handleSubmit, retrieveRandomNumbers }) => {
   return (
     <form onSubmit={handleSubmit(submit)} className="number-form">
       <Field name="number" component={renderField} type="text" />
-      <button type="submit">Load</button>
     </form>
   )
 }

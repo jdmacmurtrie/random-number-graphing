@@ -1,9 +1,4 @@
 import React, { Component } from 'react'
-import { scaleLinear } from 'd3-scale'
-import { max } from 'd3-array'
-import { select } from 'd3-selection'
-
-import moment from 'moment'
 import * as d3 from 'd3'
 
 class LineChart extends Component {
@@ -23,7 +18,7 @@ class LineChart extends Component {
   createLineChart() {
     const { numbers, time } = this.props
     const node = this.node
-    const margin = { left:200, right:25, top:20, bottom:200 };
+    const margin = { left:200, right:40, top:30, bottom:200 };
     const width = 1000 - margin.left - margin.right
     const height = 1000 - margin.top - margin.bottom
     const getTimes = () => {
@@ -71,7 +66,6 @@ class LineChart extends Component {
 
   // X-axis
   const xAxisCall = d3.axisBottom(x)
-    // .ticks(data.length)
     .tickFormat(d => d.toLocaleString())
 
   g.append("g")
@@ -157,7 +151,7 @@ class LineChart extends Component {
   render() {
     return (
       <svg ref={node => this.node = node}
-      width={1000} height={1000}>
+        width={1200} height={1200} className="svg">
       </svg>
     )
   }
